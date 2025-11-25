@@ -6,20 +6,21 @@ export default function App() {
 
   // Fetch 100 products from API
   const fetchProducts = async () => {
-    const res = await fetch("https://dummyjson.com/products?limit=100");
-    const data = await res.json();
+  const res = await fetch("http://localhost:8082/api/products"); // Laravel backend
+  const data = await res.json();
 
-    const processed = data.products.map((p) => ({
-      id: p.id,
-      name: p.title, // keep API product name
-      inventory: Math.floor(Math.random() * 200), // random stock
-      avgSales: Math.floor(Math.random() * 50) + 1, // 1–50
-      leadTime: Math.floor(Math.random() * 14) + 1, // 1–14 days
-      status: null, // will be Reorder / Monitor / In Stock
-    }));
+  const processed = data.map((p) => ({
+    id: p.id,
+    name: p.name,
+    inventory: p.inventory,
+    avgSales: p.avg_sales,
+    leadTime: p.lead_time,
+    status: null,
+  }));
 
-    setProducts(processed);
-  };
+  setProducts(processed);
+};
+
 
   // Run prediction for each product
   const runPrediction = () => {
